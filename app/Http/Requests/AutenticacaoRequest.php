@@ -30,7 +30,7 @@ class AutenticacaoRequest extends FormRequest
     public function messages()
     {
         return [
-            '*.required' => 'O campo :atribbuite é obrigatório!',
+            '*.required' => 'O campo :attribute é obrigatório!',
             'email.email' => 'O campo e-mail é obrigatório!'
         ];
     }

@@ -28,34 +28,23 @@ class AutenticacaoService
 
             // Pegando informações do usuário
             $information = DB::table('users')
-                ->join('companies', 'users.fk_companie', '=', 'companies.id')
                 ->select(
                     'users.id',
-                    'users.name AS user_name',  // Alias para o campo 'name' da tabela 'users'
+                    'users.name',
                     'users.email',
-                    'users.cpf',
-                    'users.status',
-                    'users.first_login',
-                    'companies.id AS company_id',
-                    'companies.name AS company_name'  // Alias para o campo 'name' da tabela 'companies'
+                    // 'users.status',
                 )
                 ->where('email', $email)
                 ->get();
 
             // Verificando se tem registro
             if ($information->count() > 0) {
-
                 $firstItem = $information->first(); // Obtenha o primeiro item
                 $userId = $firstItem->id;           // Acesse o id do primeiro item
             }
 
-            // Pegando permissões do usuário
-            $permissions = DB::table('users_permissions')
-                ->join('permissions', 'users_permissions.fk_permission', '=', 'permissions.id')
-                ->select('permissions.slug')
-                ->where('fk_user', $userId)->get();
 
-            return ['Token' => $token, 'User' => $information, 'Permissions' => $permissions]; // Retornando resposta para a requisição
+            return ['Token' => $token, 'User' => $information]; // Retornando resposta para a requisição
         }
     }
 
@@ -93,33 +82,5 @@ class AutenticacaoService
         $query = auth('api')->logout($token); // Colocando token na blacklist
 
         return $query;
-    }
-
-    public function firstAccess($request)
-    {
-
-        $id = $request->input('id'); // Pega id
-
-        // Salva informações
-        $informations = [
-            'first_login' => 0,
-            'password' => bcrypt($request->input('new_password'))
-        ];
-
-        // Valida senhas iguais
-        if ($request->input('new_password') != $request->input('confirmation')) {
-            return 'As senhas não coincidem!';
-        } else if (empty($request->input('new_password')) || empty($request->input('confirmation'))) {
-            return 'Os campos não foram preenchidos!';
-        } else {
-            $query = DB::table('users')->where('id', $id)->update($informations); // Alterando senha e first_login
-        }
-
-        // Retornando resposta para a requisição
-        if ($query == 1) {
-            return 'Senha atualizada com sucesso!';
-        } else {
-            return 'Ocorreu algum problema, entre em contato com o administrador!';
-        }
     }
 }
