@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AutenticacaoController;
+use App\Http\Controllers\UnidadeConsumidoraController;
+use App\Models\UnidadeConsumidora;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +24,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/logout', [AutenticacaoController::class, 'logout']);
     });
 
+    // Rotas de Unidade Consumidora
+    Route::prefix('unidades')->middleware('jwt.auth')->group(function () {
+        Route::get('/listar', [UnidadeConsumidoraController::class, 'listarUnidades']);
+        Route::post('/cadastrar', [UnidadeConsumidoraController::class, 'cadastrarUnidade']);
+        Route::put('/editar/{id?}', [UnidadeConsumidoraController::class, 'editarUnidade'])->middleware('validate.id');
+        Route::get('/busca/{id?}', [UnidadeConsumidoraController::class, 'buscaUnidade'])->middleware('validate.id');
+    });
 });
