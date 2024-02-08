@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AutenticacaoController;
+use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\UnidadeConsumidoraController;
+use App\Models\Empresa;
 use App\Models\UnidadeConsumidora;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,5 +32,13 @@ Route::prefix('v1')->group(function () {
         Route::post('/cadastrar', [UnidadeConsumidoraController::class, 'cadastrarUnidade']);
         Route::put('/editar/{id?}', [UnidadeConsumidoraController::class, 'editarUnidade'])->middleware('validate.id');
         Route::get('/busca/{id?}', [UnidadeConsumidoraController::class, 'buscaUnidade'])->middleware('validate.id');
+    });
+
+    // Rotas de Empresas
+    Route::prefix('empresas')->middleware('jwt.auth')->group(function () {
+        Route::get('/listar', [EmpresaController::class, 'listarEmpresas']);
+        Route::post('/cadastrar', [EmpresaController::class, 'cadastrarEmpresa']);
+        Route::put('/editar/{id?}', [EmpresaController::class, 'editarEmpresa'])->middleware('validate.id');
+        Route::get('/busca/{id?}', [EmpresaController::class, 'buscaEmpresa'])->middleware('validate.id');
     });
 });
