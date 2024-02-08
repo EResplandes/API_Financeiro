@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Response;
 use App\Models\UnidadeConsumidora;
 
 class UnidadeConsumidoraService
@@ -15,9 +15,9 @@ class UnidadeConsumidoraService
 
         // 2º Passo -> Retornar resposta
         if ($query) {
-            return $query;
+            return ['mensagem' => $query, 'status' => Response::HTTP_OK];
         } else {
-            return 'Ocorreu algum erro, entre em contato com o Administrador!';
+            return ['mensagem' => 'Ocorreu algum erro, entre em contato com o Administrador!', 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
         }
     }
 
@@ -33,9 +33,9 @@ class UnidadeConsumidoraService
 
         // 3º Passo -> Retornar resposta
         if ($query) {
-            return 'Unidade consumidora cadastrada com sucesso!';
+            return ['mensagem' => 'Unidade consumidora cadastrada com sucesso!', 'status' => Response::HTTP_CREATED];
         } else {
-            return 'Ocorreu algum erro, entre em contato com o Administrador!';
+            return ['mensagem' => 'Ocorreu algum erro, entre em contato com o Administrador!', 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
         }
     }
 
@@ -51,9 +51,9 @@ class UnidadeConsumidoraService
 
         // 3ª Passo -> Retornar resposta
         if ($query) {
-            return 'Unidade consumidora atualizada com sucesso!';
+            return ['mensagem' => 'Unidade consumidora atualizada com sucesso!', 'status' => Response::HTTP_OK];
         } else {
-            return 'Ocorreu algum erro, entre em contato com o Administrador!';
+            return ['mensagem' => 'Ocorreu algum erro, entre em contato com o Administrador!', 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
         }
     }
 
@@ -64,9 +64,9 @@ class UnidadeConsumidoraService
 
         // 2º Passo -> Retornar resposta
         if ($query) {
-            return $query;
+            return ['mensagem' => $query, 'status' => Response::HTTP_OK];
         } else {
-            return 'Ocorreu algum erro, entre em contato com o Administrador!';
+            return ['mensagem' => 'Ocorreu algum erro, entre em contato com o Administrador!', 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
         }
     }
 }

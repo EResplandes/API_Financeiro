@@ -19,24 +19,24 @@ class UnidadeConsumidoraController extends Controller
     public function listarUnidades()
     {
         $query = $this->unidadeService->listarUnidades(); // Lista todas unidades consumidoras
-        return response()->json(['response' => $query]);
+        return response()->json(['response' => $query['mensagem']], $query['status']);
     }
 
     public function cadastrarUnidade(UnidadeConsumidoraRequest $request)
     {
         $query = $this->unidadeService->cadastraUnidade($request); // Cadastra unidade consumidora
-        return response()->json(['response' => $query]);
+        return response()->json(['response' => $query['mensagem']], $query['status']);
     }
 
     public function editarUnidade(UnidadeConsumidoraRequest $request, $id)
     {
         $query = $this->unidadeService->editarUnidade($request, $id); // Edita a unidade consumidora
-        return response()->json(['response' => $query]);
+        return response()->json(['response' => $query['mensagem']], $query['status']);
     }
 
     public function buscaUnidade($id)
     {
         $query = $this->unidadeService->buscaUnidade($id); // Busca informações da unidade
-        return response()->json(['response' => $query]);
+        return response()->json(['response' => $query['mensagem']], $query['status']);
     }
 }
