@@ -2,6 +2,10 @@
 
 Este projeto é uma API REST desenvolvida para controle de pagamentos, permitindo gerenciar informações sobre pagamentos realizados.
 
+# Modelagem do banco de dados
+
+![Projetos Financeiro](https://www.gruporialma.com.br/wp-content/uploads/2024/03/Projeto-Financeiro.png)
+
 ## Funcionalidades
 
 - [x] Cadastro de pagamentos
