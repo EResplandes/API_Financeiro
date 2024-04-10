@@ -2,10 +2,9 @@
 
 use App\Http\Controllers\AutenticacaoController;
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\UnidadeConsumidoraController;
-use App\Models\Empresa;
-use App\Models\UnidadeConsumidora;
-use Illuminate\Http\Request;
+use App\Models\Fornecedor;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
+    // Rotas de Autenticação
     Route::prefix('autenticacao')->group(function () {
         Route::post('/login', [AutenticacaoController::class, 'login']);
         Route::post('/logout', [AutenticacaoController::class, 'logout']);
@@ -41,4 +41,12 @@ Route::prefix('v1')->group(function () {
         Route::put('/editar/{id?}', [EmpresaController::class, 'editarEmpresa'])->middleware('validate.id');
         Route::get('/busca/{id?}', [EmpresaController::class, 'buscaEmpresa'])->middleware('validate.id');
     });
+
+    // Rotas de Fornecedores
+    Route::prefix('fornecedores')->middleware('jwt.auth')->group(function () {
+        Route::get('/listar', [FornecedorController::class, 'listarFornecedores']);
+        Route::post('/cadastrar', [FornecedorController::class, 'cadastrarFornecedor']);
+        Route::put('/editar/{id?}', [FornecedorController::class, 'editarFornecedor'])->middleware('validate.id');
+    });
+    
 });
