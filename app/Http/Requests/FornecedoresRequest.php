@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FornecedorRequest extends FormRequest
+class FornecedoresRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,14 @@ class FornecedorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nome' => 'required'
+            'nome' => 'required|string|max:255',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'nome.required' => 'O campo nome é obrigatório!',
         ];
     }
 }

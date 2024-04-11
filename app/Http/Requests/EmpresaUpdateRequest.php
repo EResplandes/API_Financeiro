@@ -23,7 +23,7 @@ class EmpresaUpdateRequest extends FormRequest
     {
         return [
             'empresa' => 'unique:empresas|string',
-            'cnpj' => 'unique:empresas|integer'
+            'cnpj' => 'integer'
         ];
     }
 
@@ -32,7 +32,6 @@ class EmpresaUpdateRequest extends FormRequest
         return [
             'empresa.unique' => 'A empresa já está cadastrada!',
             'empresa.string' => 'O campo empresa deve ser do tipo texto',
-            'cnpj.unique' => 'O CNPJ já está em uso!',
             'cnpj.integer' => 'O campo CNPJ deve conter apenas números!',
         ];
     }

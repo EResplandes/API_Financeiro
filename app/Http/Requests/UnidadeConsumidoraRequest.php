@@ -29,7 +29,7 @@ class UnidadeConsumidoraRequest extends FormRequest
     public function messages()
     {
         return [
-            'nome.required' => 'O campo nome é obrigatório!',
+            'nome.required' => 'O campo unidade consumidora é obrigatório!',
             'nome.unique' => 'A unidade consumidora já está cadastrada!'
         ];
     }

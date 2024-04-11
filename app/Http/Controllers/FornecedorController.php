@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Services\FornecedorService;
-use App\Http\Requests\FornecedorRequest;
 use Illuminate\Http\Request;
+use App\Http\Requests\FornecedoresRequest;
 
 class FornecedorController extends Controller
 {
@@ -22,7 +22,7 @@ class FornecedorController extends Controller
         return response()->json(['response' => $query['mensagem']], $query['status']); // Retornando resposta
     }
 
-    public function cadastrarFornecedor(Request $request)
+    public function cadastrarFornecedor(FornecedoresRequest $request)
     {
         $query = $this->fornecedorService->cadastro($request); // Metódo responsável por cadastrar fornecedor
         return response()->json(['response' => $query['mensagem']], $query['status']); // Retornando resposta
