@@ -11,4 +11,5 @@ class Banco extends Model
 
     protected $table = 'dados_bancarios';
 
+    protected $fillable = ['cod_banco', 'agencia', 'conta', 'descricao_banco'];
 }
