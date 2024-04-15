@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AutenticacaoController;
+use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\UnidadeConsumidoraController;
@@ -48,5 +49,9 @@ Route::prefix('v1')->group(function () {
         Route::post('/cadastrar', [FornecedorController::class, 'cadastrarFornecedor']);
         Route::put('/editar/{id?}', [FornecedorController::class, 'editarFornecedor'])->middleware('validate.id');
     });
-    
+
+    // Rotas de Contratos
+    Route::prefix('contratos')->middleware('jwt.auth')->group(function () {
+        Route::post('/cadastrar', [ContratoController::class, 'cadastrarContrato']);
+    });
 });
