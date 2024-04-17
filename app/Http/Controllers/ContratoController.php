@@ -21,9 +21,27 @@ class ContratoController extends Controller
         return response()->json(['mensagem' => $query['mensagem']], $query['status']);
     }
 
+    public function listarContratosFiltros(Request $request)
+    {
+        $query = $this->contratoService->listarFiltros($request); // Método responsável por listar contratos de acordo com filtro
+        return response()->json(['mensagem' => $query['mensagem']], $query['status']);
+    }
+
     public function cadastrarContrato(Request $request)
     {
         $query = $this->contratoService->cadastrar($request); // Método responsável por cadastrar um novo contrato
+        return response()->json(['mensagem' => $query['mensagem']], $query['status']);
+    }
+
+    public function editarContrato(Request $request)
+    {
+        $query = $this->contratoService->editar(); // Método responsável por editar contrato
+        return response()->json(['mensagem' => $query['mensagem']], $query['status']);
+    }
+
+    public function buscaContrato()
+    {
+        $query = $this->contratoService->busca(); // Método resposável por buscar dados de um contrato
         return response()->json(['mensagem' => $query['mensagem']], $query['status']);
     }
 }

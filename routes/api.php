@@ -5,7 +5,6 @@ use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\UnidadeConsumidoraController;
-use App\Models\Fornecedor;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,6 +51,10 @@ Route::prefix('v1')->group(function () {
 
     // Rotas de Contratos
     Route::prefix('contratos')->middleware('jwt.auth')->group(function () {
+        Route::get('/listar', [ContratoController::class, 'listarContratos']);
+        Route::get('/listar-filtros', [ContratoController::class, 'listarContratosFiltros']);
         Route::post('/cadastrar', [ContratoController::class, 'cadastrarContrato']);
+        Route::put('/editar/{id?}', [ContratoController::class, 'editarContrato']);
+        Route::get('/busca/{id?}', [ContratoController::class, 'buscaContrato']);
     });
 });
