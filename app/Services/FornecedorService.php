@@ -22,7 +22,7 @@ class FornecedorService
 
         // 2º Passo -> Consultar todos os fornecedores com seus dados bancarios caso existam
         $query = $query->join('dados_bancarios', 'dados_bancarios.id', '=', 'fornecedores.fk_banco');
-        $query = $query->select('fornecedores.id', 'fornecedores.nome' , 'fornecedores.nome_fantasia', 'fornecedores.cnpj', 'fornecedores.login', 'fornecedores.login', 'fornecedores.senha', 'fornecedores.fk_banco', 'dados_bancarios.cod_banco', 'dados_bancarios.agencia', 'dados_bancarios.conta', 'dados_bancarios.descricao_banco');
+        $query = $query->select('fornecedores.id', 'fornecedores.nome', 'fornecedores.nome_fantasia', 'fornecedores.cnpj', 'fornecedores.login', 'fornecedores.login', 'fornecedores.senha', 'fornecedores.fk_banco', 'dados_bancarios.cod_banco', 'dados_bancarios.agencia', 'dados_bancarios.conta', 'dados_bancarios.descricao_banco');
         $query = $query->get();
 
         // 3º Passo -> Retornar resposta
@@ -32,6 +32,40 @@ class FornecedorService
             return ['mensagem' => 'Ocorreu algum erro, entre em contato com o Administrador!', 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
         }
     }
+
+    public function listarFiltros($request)
+    {
+        // 1º Passo -> Iniciar consulta
+        $query = Fornecedor::query();
+
+        // 2º Passo -> Consultar todos os fornecedores com seus dados bancarios caso existam
+        $query = $query->join('dados_bancarios', 'dados_bancarios.id', '=', 'fornecedores.fk_banco');
+        $query = $query->select('fornecedores.id', 'fornecedores.nome', 'fornecedores.nome_fantasia', 'fornecedores.cnpj', 'fornecedores.login', 'fornecedores.login', 'fornecedores.senha', 'fornecedores.fk_banco', 'dados_bancarios.cod_banco', 'dados_bancarios.agencia', 'dados_bancarios.conta', 'dados_bancarios.descricao_banco');
+
+        // 3º Passo -> Verifica se os campos foram passador por url para aplicar filtros
+        if ($request->query('nome')) {
+            $query = $query->where('nome', 'LIKE', '%' . $request->query('nome') . '%');
+        }
+
+        if ($request->query('nome_fantasia')) {
+            $query = $query->where('nome_fantasia', 'LIKE', '%' . $request->query('nome_fantasia') . '%');
+        }
+
+        if ($request->query('cnpj')) {
+            $query = $query->where('cnpj', $request->query('cnpj'));
+        }
+
+        // 4º Passo -> Buscar fornecedores
+        $query = $query->get();
+
+        // 5º Passo -> Retornar resposta
+        if ($query) {
+            return ['mensagem' => $query, 'status' => Response::HTTP_OK];
+        } else {
+            return ['mensagem' => 'Ocorreu algum erro, entre em contato com o Administrador!', 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
+        }
+    }
+
 
     public function cadastro($request)
     {

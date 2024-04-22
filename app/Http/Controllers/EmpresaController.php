@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EmpresaRequest;
 use App\Services\EmpresaService;
 use App\Http\Requests\EmpresaUpdateRequest;
+use Illuminate\Http\Request;
 
 class EmpresaController extends Controller
 {
@@ -21,6 +22,13 @@ class EmpresaController extends Controller
         $query = $this->empresaService->listarEmpresas(); // Busca todas empresas
         return response()->json(['response' => $query['mensagem']], $query['status']);
     }
+
+    public function listarEmpresasFiltros(Request $request)
+    {
+        $query = $this->empresaService->listarFiltros($request); // Busca com filtros
+        return response()->json(['response' => $query['mensagem']], $query['status']);
+    }
+
 
     public function cadastrarEmpresa(EmpresaRequest $request)
     {

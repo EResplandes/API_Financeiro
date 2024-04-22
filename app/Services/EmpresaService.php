@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Empresa;
 use Illuminate\Http\Response;
-
+use GuzzleHttp\Psr7\Request;
 
 class EmpresaService
 {
@@ -15,6 +15,31 @@ class EmpresaService
         $query = Empresa::all();
 
         // 2º Passo -> Retornar resposta
+        if ($query) {
+            return ['mensagem' => $query, 'status' => Response::HTTP_OK];
+        } else {
+            return ['mensagem' => 'Ocorreu algum erro, entre em contato com o Administrador!', 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
+        }
+    }
+
+    public function listarFiltros($request)
+    {
+        // 1ª Passo -> Inicia consulta
+        $query = Empresa::query();
+
+        // 2º Passo -> Verifica se os campos foram passador por url para aplicar filtros
+        if ($request->query('empresa')) {
+            $query = $query->where('empresa', 'LIKE', '%' . $request->query('empresa') . '%');
+        }
+
+        if ($request->query('cnpj')) {
+            $query = $query->where('cnpj', $request->query('cnpj'));
+        }
+
+        // 3º Passo -> Realiza consulta
+        $query = $query->get();
+
+        // 4º Passo -> Retornar resposta
         if ($query) {
             return ['mensagem' => $query, 'status' => Response::HTTP_OK];
         } else {

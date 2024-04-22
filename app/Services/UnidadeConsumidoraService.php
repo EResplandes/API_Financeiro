@@ -11,9 +11,30 @@ class UnidadeConsumidoraService
     public function listarUnidades()
     {
         // 1º Passo -> Pegar todas unidades consumidoras
-        $query = UnidadeConsumidora::all(); // Busca todas as unidades consumidoras
+        $query = UnidadeConsumidora::all();
 
         // 2º Passo -> Retornar resposta
+        if ($query) {
+            return ['mensagem' => $query, 'status' => Response::HTTP_OK];
+        } else {
+            return ['mensagem' => 'Ocorreu algum erro, entre em contato com o Administrador!', 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
+        }
+    }
+
+    public function listarFiltros($request)
+    {
+        // 1º Passo -> Iniciar query
+        $query = UnidadeConsumidora::query();
+
+        // 2º Passo -> Verifica se os campos foram passador por url para aplicar filtros
+        if ($request->query('nome')) {
+            $query = $query->where('nome', 'LIKE', '%' . $request->query('nome') . '%');
+        }
+
+        // 3º Passo -> Executar consulta
+        $query = $query->get();
+
+        // 4º Passo -> Retornar resposta
         if ($query) {
             return ['mensagem' => $query, 'status' => Response::HTTP_OK];
         } else {

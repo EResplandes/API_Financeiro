@@ -22,6 +22,12 @@ class UnidadeConsumidoraController extends Controller
         return response()->json(['response' => $query['mensagem']], $query['status']);
     }
 
+    public function listarUnidadesFiltros(Request $request)
+    {
+        $query = $this->unidadeService->listarFiltros($request); // Lista com filtros
+        return response()->json(['response' => $query['mensagem']], $query['status']);
+    }
+
     public function cadastrarUnidade(UnidadeConsumidoraRequest $request)
     {
         $query = $this->unidadeService->cadastraUnidade($request); // Cadastra unidade consumidora

@@ -22,6 +22,12 @@ class FornecedorController extends Controller
         return response()->json(['response' => $query['mensagem']], $query['status']); // Retornando resposta
     }
 
+    public function listarForncedoresFiltros(Request $request)
+    {
+        $query = $this->fornecedorService->listarFiltros($request); // Metódo responsável por buscar com filtros
+        return response()->json(['response' => $query['mensagem']], $query['status']); // Retornando resposta
+    }
+
     public function cadastrarFornecedor(FornecedoresRequest $request)
     {
         $query = $this->fornecedorService->cadastro($request); // Metódo responsável por cadastrar fornecedor

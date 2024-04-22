@@ -98,7 +98,7 @@ class ContratoService
 
         // 2º Passo -> Verificar se o checkbox onde gera parcelas automáticas está ativo
         if ($request->input('parcela_automatica') == 'true') {
-            $this->cadastrarParcela($dados);
+            return $this->cadastrarParcela($dados);
         } else {
             // 3º -> Se não, apenas cadastrar na tabela contratos
             $query = Contrato::create($dados);
@@ -132,13 +132,26 @@ class ContratoService
 
             // 5º Passo -> Inserir parcelas
             $parcelas = [];
+
+            $arrayPrimeiro = [
+                'fk_contrato' => $id_contrato,
+                'mes_referencia' => $dados['mes_referencia'],
+                'dt_vencimento' => $dados['data_vencimento'],
+                'observacao' => 'N/C',
+                'valor' => $valorParcela
+            ];
+
+            Parcela::insert($arrayPrimeiro); // Primeiro Insert 
+
             for ($i = 1; $i <= $dados['qtd_parcelas']; $i++) {
                 // Atualizar a data de vencimento e a referência do mês para cada parcela
                 $dtVencimento = date('Y-m-d', strtotime("$diaMesVencimento-$anoAtual +$i months"));
 
-                $mesReferencia += $i - 1; // Ajuste para o mês anterior
-                while ($mesReferencia > 12) {
-                    $mesReferencia -= 12; // Ajuste para não ultrapassar 12 meses
+                // Incrementar o mês de referência, garantindo que não ultrapasse 12
+                $mesReferencia += 1;
+                if ($mesReferencia > 12) {
+                    $mesReferencia = 1; // Voltar para janeiro
+                    $anoAtual += 1; // Incrementar o ano
                 }
 
                 // Montar array para inserir na tabela de parcelas
@@ -146,7 +159,7 @@ class ContratoService
                     'fk_contrato' => $id_contrato,
                     'mes_referencia' => $mesReferencia,
                     'dt_vencimento' => $dtVencimento,
-                    'observacao' => 'vazio',
+                    'observacao' => 'N/C',
                     'valor' => $valorParcela
                 ];
                 $parcelas[] = $arrayInsert;
@@ -167,16 +180,33 @@ class ContratoService
         }
     }
 
-
-
-
-    public function editar()
-    {
-        dd('teste');
-    }
-
     public function busca($id)
     {
-        dd('teste');
+        // 1º Passo -> Buscar todos contratos com os devidos joins
+        $query = Contrato::query();
+        $query = $query->join('empresas', 'empresas.id', '=', 'contratos.fk_empresa');
+        $query = $query->join('fornecedores', 'fornecedores.id', '=', 'contratos.fk_fornecedor');
+        $query = $query->join('unidades_consumidoras', 'unidades_consumidoras.id', '=', 'contratos.fk_unidade');
+        $query = $query->select(
+            'contratos.id',
+            'contratos.servico',
+            'contratos.qtd_parcelas',
+            'contratos.valor_contrato',
+            'empresas.id AS id_empresa',
+            'empresas.empresa AS nome_empresa',
+            'fornecedores.nome',
+            'fornecedores.nome_fantasia',
+            'fornecedores.cnpj',
+            'unidades_consumidoras.nome AS unidade_consumidora'
+        );
+        $query = $query->where('contratos.id', $id);
+        $query = $query->get();
+
+        // 2º Passo -> Retornar resposta
+        if ($query) {
+            return ['mensagem' => $query, 'status' => Response::HTTP_OK];
+        } else {
+            return ['mensagem' => 'Ocorreu algum erro, entre em contato com o Administrador!', 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
+        }
     }
 }
