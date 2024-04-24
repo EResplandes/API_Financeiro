@@ -24,6 +24,7 @@ class ContratoService
             'contratos.servico',
             'contratos.qtd_parcelas',
             'contratos.valor_contrato',
+            'contratos.contrato',
             'empresas.id AS id_empresa',
             'empresas.empresa AS nome_empresa',
             'fornecedores.nome',
@@ -54,6 +55,7 @@ class ContratoService
             'contratos.servico',
             'contratos.qtd_parcelas',
             'contratos.valor_contrato',
+            'contratos.contrato',
             'empresas.id AS id_empresa',
             'empresas.empresa AS nome_empresa',
             'fornecedores.nome',
@@ -70,6 +72,11 @@ class ContratoService
         if ($request->query('id_empresa')) {
             $query = $query->where('contratos.fk_empresa', $request->query('id_empresa'));
         }
+
+        if ($request->query('id_contrato')) {
+            $query = $query->where('contratos.id', $request->query('id_contrato'));
+        }
+
 
         $query = $query->get(); // Executando a consulta
 

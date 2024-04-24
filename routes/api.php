@@ -4,6 +4,7 @@ use App\Http\Controllers\AutenticacaoController;
 use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\FornecedorController;
+use App\Http\Controllers\ParcelaController;
 use App\Http\Controllers\UnidadeConsumidoraController;
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +58,11 @@ Route::prefix('v1')->group(function () {
         Route::get('/listar', [ContratoController::class, 'listarContratos']);
         Route::get('/listar-filtros', [ContratoController::class, 'listarContratosFiltros']);
         Route::post('/cadastrar', [ContratoController::class, 'cadastrarContrato']);
-        Route::get('/busca/{id?}', [ContratoController::class, 'buscaContrato']);
+        Route::get('/busca/{id?}', [ContratoController::class, 'buscaContrato'])->middleware('validate.id');
+    });
+
+    // Rotas das Parcelas
+    Route::prefix('parcelas')->middleware('jwt.auth')->group(function () {
+        Route::get('/listar/{id}', [ParcelaController::class, 'listarParcelas']);
     });
 });

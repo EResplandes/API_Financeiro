@@ -18,4 +18,9 @@ class Parcela extends Model
         'observacao',
         'valor'
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 }
