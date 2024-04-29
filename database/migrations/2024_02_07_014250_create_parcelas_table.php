@@ -18,6 +18,8 @@ return new class extends Migration
             $table->date('dt_vencimento');
             $table->char('observacao')->nullable();
             $table->float('valor');
+            $table->unsignedBigInteger('fk_status');
+            $table->foreign('fk_status')->references('id')->on('status_parcelas');
             $table->foreign('fk_contrato')->references('id')->on('contratos');
             $table->timestamps();
         });

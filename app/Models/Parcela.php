@@ -16,7 +16,8 @@ class Parcela extends Model
         'mes_referencia',
         'dt_vencimento',
         'observacao',
-        'valor'
+        'valor',
+        'fk_status'
     ];
 
     protected $hidden = [

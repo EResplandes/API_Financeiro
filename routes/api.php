@@ -63,6 +63,9 @@ Route::prefix('v1')->group(function () {
 
     // Rotas das Parcelas
     Route::prefix('parcelas')->middleware('jwt.auth')->group(function () {
-        Route::get('/listar/{id}', [ParcelaController::class, 'listarParcelas']);
+        Route::get('/listar/{id}', [ParcelaController::class, 'listarParcelas'])->middleware('validate.id');
+        Route::post('/cadastrar', [ParcelaController::class, 'cadastrarParcela']);
+        Route::get('/enviar-diretoria/{id}', [ParcelaController::class, 'enviaDiretoria'])->middleware('validate.id');
+        Route::get('/enviar-presidencia/{id}', [ParcelaController::class, 'enviaPresidencia'])->middleware('validate.id');
     });
 });

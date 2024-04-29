@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('historico_parcelas', function (Blueprint $table) {
-            $table->id();
-            $table->dateTime('data_status');
-            $table->unsignedBigInteger('fk_parcela');
-            $table->foreign('fk_parcela')->references('id')->on('parcelas');
-            $table->timestamps();
+        Schema::table('historico_parcelas', function (Blueprint $table) {
+            $table->string('observacao')->nullable();
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('historico_parcelas');
+        Schema::table('historico_parcelas', function (Blueprint $table) {
+            //
+        });
     }
 };
