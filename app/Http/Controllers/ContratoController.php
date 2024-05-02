@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\ContratoService;
+use App\Http\Requests\ContratoRequest;
 
 class ContratoController extends Controller
 {
@@ -27,7 +28,7 @@ class ContratoController extends Controller
         return response()->json(['mensagem' => $query['mensagem']], $query['status']);
     }
 
-    public function cadastrarContrato(Request $request)
+    public function cadastrarContrato(ContratoRequest $request)
     {
         $query = $this->contratoService->cadastrar($request); // Método responsável por cadastrar um novo contrato
         return response()->json(['mensagem' => $query['mensagem']], $query['status']);
