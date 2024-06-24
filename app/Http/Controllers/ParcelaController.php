@@ -28,15 +28,9 @@ class ParcelaController extends Controller
         return response()->json(['response' => $query['mensagem']], $query['status']);
     }
 
-    public function enviaDiretoria($id)
+    public function excluirParcela($id)
     {
-        $query = $this->parcelaService->diretoria($id); // Metódo responsável por alterar status para enviado para diretoria
-        return response()->json(['response' => $query['mensagem']], $query['status']);
-    }
-
-    public function enviaPresidencia($id)
-    {
-        $query = $this->parcelaService->presidencia($id); // Metódo responsável por alterar status para enviado para diretoria
-        return response()->json(['response' => $query['mensagem']], $query['status']);
+        $query = $this->parcelaService->excluir($id); // Metódo responsável por excluir parcela
+        return response()->json(['resposta' => $query['mensagem']], $query['status']);
     }
 }

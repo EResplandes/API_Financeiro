@@ -6,6 +6,7 @@ use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\ParcelaController;
 use App\Http\Controllers\UnidadeConsumidoraController;
+use App\Models\Parcela;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,7 +66,6 @@ Route::prefix('v1')->group(function () {
     Route::prefix('parcelas')->middleware('jwt.auth')->group(function () {
         Route::get('/listar/{id}', [ParcelaController::class, 'listarParcelas'])->middleware('validate.id');
         Route::post('/cadastrar', [ParcelaController::class, 'cadastrarParcela']);
-        Route::get('/enviar-diretoria/{id}', [ParcelaController::class, 'enviaDiretoria'])->middleware('validate.id');
-        Route::get('/enviar-presidencia/{id}', [ParcelaController::class, 'enviaPresidencia'])->middleware('validate.id');
+        Route::delete('/deletar/{id}', [ParcelaController::class, 'excluirParcela'])->middleware('validate.id');
     });
 });
