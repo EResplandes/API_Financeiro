@@ -33,4 +33,22 @@ class ParcelaController extends Controller
         $query = $this->parcelaService->excluir($id); // Metódo responsável por excluir parcela
         return response()->json(['resposta' => $query['mensagem']], $query['status']);
     }
+
+    public function statusLink($id, $idPedido)
+    {
+        $query = $this->parcelaService->statusLink($id, $idPedido); // Metódo responsável por atualizar status para 'Em Aprovação'
+        return response()->json(['resposta' => $query['resposta']], $query['status']);
+    }
+
+    public function aprovaParcela($id)
+    {
+        $query = $this->parcelaService->aprovaParcela($id); // Metódo responsável por atualizar status da parcela
+        return response()->json(['resposta' => $query['resposta']], $query['status']);
+    }
+
+    public function reprovaParcela($id)
+    {
+        $query = $this->parcelaService->reprovaParcela($id); // Metódo responsável por reprovar status da parcela
+        return response()->json(['resposta' => $query['resposta']], $query['status']);
+    }
 }

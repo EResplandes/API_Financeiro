@@ -15,7 +15,7 @@ class ParcelaService
         // 1º Passo -> Buscar todas parcelas referentes ao id do contrato passado pela url
         $query = Parcela::query();
         $query = $query->join('status_parcelas', 'status_parcelas.id', '=', 'parcelas.fk_status');
-        $query = $query->select('parcelas.id', 'parcelas.mes_referencia', 'parcelas.dt_vencimento', 'parcelas.observacao', 'parcelas.valor', 'status_parcelas.status');
+        $query = $query->select('parcelas.id', 'parcelas.mes_referencia', 'parcelas.dt_vencimento', 'parcelas.observacao', 'parcelas.valor', 'parcelas.id_pedido', 'status_parcelas.status');
         $query = $query->where('fk_contrato', $id)->get();
 
         // 2º Passo -> Retornar resposta
@@ -97,6 +97,65 @@ class ParcelaService
             DB::rollback(); // Se uma exceção ocorrer durante as operações do banco de dados, fazemos o rollback
 
             return ['mensagem' => $e, 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
+        }
+    }
+
+    public function statusLink($id, $idPedido)
+    {
+        // 1º Passo -> Atualizar status da parcela para 02 (Enviado para Aprovação) e atualziar informando id do registro no link
+        $query = Parcela::where('id', $id)
+            ->update([
+                'fk_status' => 2,
+                'id_pedido' => $idPedido
+            ]);
+
+        // 2º Passo -> Retornar resposta
+        if ($query) {
+            return ['resposta' => 'Parcela enviada para o link com sucesso!', 'status' => Response::HTTP_ACCEPTED];
+        } else {
+            return ['resposta' => 'Ocorreu algum problema, entre em contato com o Administrador!', 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
+        }
+    }
+
+    public function aprovaParcela($id)
+    {
+        try {
+            // 1º Passo -> Pegar id da parcela de acordo com id do pedido
+            $idParcela = Parcela::where('id_pedido', $id)
+                ->pluck('id')
+                ->first();
+
+            // 2º Passo -> Atualizar status para 4
+            Parcela::where('id', $idParcela)
+                ->update(['fk_status' => 4]);
+
+            DB::commit();
+            return ['resposta' => 'Parcela atualizada com sucesso!', 'status' => Response::HTTP_OK];
+        } catch (\Exception $e) {
+            DB::rollback(); // Se uma exceção ocorrer durante as operações do banco de dados, fazemos o rollback
+
+            return ['resposta' => $e, 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
+        }
+    }
+
+    public function reprovaParcela($id)
+    {
+        try {
+            // 1º Passo -> Pegar id da parcela de acordo com id do pedido
+            $idParcela = Parcela::where('id_pedido', $id)
+                ->pluck('id')
+                ->first();
+
+            // 2º Passo -> Atualizar status para 5
+            Parcela::where('id', $idParcela)
+                ->update(['fk_status' => 4]);
+
+            DB::commit();
+            return ['resposta' => 'Parcela atualizada com sucesso!', 'status' => Response::HTTP_OK];
+        } catch (\Exception $e) {
+            DB::rollback(); // Se uma exceção ocorrer durante as operações do banco de dados, fazemos o rollback
+
+            return ['resposta' => $e, 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
         }
     }
 }

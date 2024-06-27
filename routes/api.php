@@ -67,5 +67,8 @@ Route::prefix('v1')->group(function () {
         Route::get('/listar/{id}', [ParcelaController::class, 'listarParcelas'])->middleware('validate.id');
         Route::post('/cadastrar', [ParcelaController::class, 'cadastrarParcela']);
         Route::delete('/deletar/{id}', [ParcelaController::class, 'excluirParcela'])->middleware('validate.id');
+        Route::get('/status-link/{id}/{idPedido}', [ParcelaController::class, 'statusLink']);
+        Route::get('/aprova-parcela/{id}', [ParcelaController::class, 'aprovaParcela'])->middleware('validate.id');
+        Route::get('/reprova-parcela/{id}', [ParcelaController::class, 'reprovaParcela'])->middleware('validate.id');
     });
 });
