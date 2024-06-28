@@ -51,4 +51,11 @@ class ParcelaController extends Controller
         $query = $this->parcelaService->reprovaParcela($id); // Metódo responsável por reprovar status da parcela
         return response()->json(['resposta' => $query['resposta']], $query['status']);
     }
+
+    public function anexarComprovante(Request $request)
+    {
+        $query = $this->parcelaService->anexarComprovante($request); // Metódo responsável por cadastrar comprovante
+        return response()->json(['resposta' => $query['resposta']], $query['status']);
+    }
+
 }

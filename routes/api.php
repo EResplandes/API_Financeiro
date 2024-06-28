@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AutenticacaoController;
 use App\Http\Controllers\ContratoController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\ParcelaController;
@@ -70,5 +71,12 @@ Route::prefix('v1')->group(function () {
         Route::get('/status-link/{id}/{idPedido}', [ParcelaController::class, 'statusLink']);
         Route::get('/aprova-parcela/{id}', [ParcelaController::class, 'aprovaParcela'])->middleware('validate.id');
         Route::get('/reprova-parcela/{id}', [ParcelaController::class, 'reprovaParcela'])->middleware('validate.id');
+        Route::post('/anexar-comprovante', [ParcelaController::class, 'anexarComprovante']);
     });
+
+    // Rotas do Dashboard
+    Route::prefix('dashboard')->middleware('jwt.auth')->group(function () {
+        Route::get('/listar-informacoes', [DashboardController::class, 'listarInformacoes']);
+    });
+
 });
