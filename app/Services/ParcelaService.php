@@ -64,7 +64,7 @@ class ParcelaService
         } catch (\Exception $e) {
             DB::rollback(); // Se uma exceção ocorrer durante as operações do banco de dados, fazemos o rollback
 
-            return ['resposta' => $e, 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
+            return ['mensagem' => $e, 'status' => Response::HTTP_INTERNAL_SERVER_ERROR];
         }
     }
 

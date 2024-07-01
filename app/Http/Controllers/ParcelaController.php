@@ -57,5 +57,4 @@ class ParcelaController extends Controller
         $query = $this->parcelaService->anexarComprovante($request); // Metódo responsável por cadastrar comprovante
         return response()->json(['resposta' => $query['resposta']], $query['status']);
     }
-
 }
